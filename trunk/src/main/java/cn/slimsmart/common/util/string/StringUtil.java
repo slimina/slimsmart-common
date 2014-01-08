@@ -72,4 +72,16 @@ public class StringUtil extends StringUtils {
         }
         return uStr;
     }
+	
+	/**
+	 * 首字母转小写
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static String lowercaseFirstLetter(String str) {
+		char c = str.charAt(0);
+		String temp = new String(c + "");
+		return str.replaceFirst(temp, org.apache.commons.lang.StringUtils.lowerCase(temp));
+	}
 }
