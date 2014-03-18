@@ -38,7 +38,7 @@ public class ReflectionUtil {
         try {
             return Class.forName(className);
         } catch (final ClassNotFoundException e) {
-        	throw new RuntimeException(e);
+        	throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -55,7 +55,7 @@ public class ReflectionUtil {
         try {
             return cls.getDeclaredConstructor(args);
         } catch (final Exception e) {
-        	throw new RuntimeException(e);
+        	throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -91,7 +91,7 @@ public class ReflectionUtil {
             con.setAccessible(true);
             return (T) con.newInstance(args);
         } catch (final Exception e) {
-            throw new RuntimeException(e);
+        	throw new RuntimeException(e.getMessage(), e);
         }
     }
     
@@ -286,11 +286,10 @@ public class ReflectionUtil {
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + obj + "]");
 		}
-
 		try {
 			return method.invoke(obj, args);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
@@ -307,7 +306,7 @@ public class ReflectionUtil {
 		try {
 			return method.invoke(obj, args);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
@@ -328,7 +327,7 @@ public class ReflectionUtil {
 				makeAccessible(method);
 				return method;
 			} catch (NoSuchMethodException e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException(e.getMessage(), e);
 			}
 		}
 		return null;
@@ -433,7 +432,7 @@ public class ReflectionUtil {
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e.getMessage(), e);
 		}
 		return returnMap;
 	}

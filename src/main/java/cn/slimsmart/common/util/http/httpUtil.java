@@ -8,11 +8,9 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.http.HttpServletRequest;
-
-public class httpUtil {
+public class HttpUtil {
 	
-	private httpUtil(){}
+	private HttpUtil(){}
 	
 	public static String buildUri(String schema, String host, String path, Map<String, String> param) {
 		StringBuilder uriBuilder = new StringBuilder();
@@ -41,47 +39,5 @@ public class httpUtil {
 		}
 		bufferedReader.close();
 		return result;
-	}
-	
-	/**
-	 * 获取客户端IP
-	 * 
-	 * @return
-	 */
-	public static String getRequestIp(final HttpServletRequest request) {
-		String ip = request.getHeader("X-Forwarded-For");
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("X-Real-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_CLIENT_IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-		return ip;
-	}
-	
-	/**
-	 * 判断是否为Ajax请求
-	 * 
-	 * @return 是true, 否false
-	 */
-	public static boolean isAjaxRequest(HttpServletRequest request) {
-		String requestType = request.getHeader("X-Requested-With");
-		if (requestType != null && requestType.equals("XMLHttpRequest")) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 }

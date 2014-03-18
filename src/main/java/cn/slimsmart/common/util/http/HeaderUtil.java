@@ -5,17 +5,11 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.slimsmart.common.util.string.StringUtil;
+
 public class HeaderUtil {
 	
 	private HeaderUtil(){}
-	
-	//-- Content Type 定义 --//
-	public static final String TEXT_TYPE = "text/plain";
-	public static final String JSON_TYPE = "application/json";
-	public static final String XML_TYPE = "text/xml";
-	public static final String HTML_TYPE = "text/html";
-	public static final String JS_TYPE = "text/javascript";
-	public static final String EXCEL_TYPE = "application/vnd.ms-excel";
 	
   	private static final String CACHE_CONTROL = "Cache-Control";
   	private static final String CONTENT_DISPOSITION = "Content-Disposition";
@@ -23,6 +17,16 @@ public class HeaderUtil {
   	private static final String IF_MODIFIED_SINCE = "If-Modified-Since";
   	private static final String LAST_MODIFIED = "Last-Modified";
   	private static final String PRAGMA = "Pragma";
+  	
+ // -- header 常量定义 --//
+ 	private static final String HEADER_ENCODING = "encoding";
+
+ 	private static final String HEADER_NOCACHE = "no-cache";
+
+ 	private static final String DEFAULT_ENCODING = "UTF-8";
+
+ 	private static final boolean DEFAULT_NOCACHE = true;
+  	
 
 	/**
 	 * 设置客户端缓存过期时间 的Header.
@@ -81,6 +85,32 @@ public class HeaderUtil {
 			String encodedfileName = new String(fileName.getBytes(), "ISO8859-1");
 			response.setHeader(CONTENT_DISPOSITION, "attachment; filename=\"" + encodedfileName + "\"");
 		} catch (UnsupportedEncodingException e) {
+		}
+	}
+	
+	/**
+	 * 分析并设置contentType与headers.
+	 */
+	public static void initResponseHeader(HttpServletResponse response,final String contentType, final String... headers) {
+		// 分析headers参数
+		String encoding = DEFAULT_ENCODING;
+		boolean noCache = DEFAULT_NOCACHE;
+		for (String header : headers) {
+			String headerName = StringUtil.substringBefore(header, ":");
+			String headerValue = StringUtil.substringAfter(header, ":");
+			if (StringUtil.equalsIgnoreCase(headerName, HEADER_ENCODING)) {
+				encoding = headerValue;
+			} else if (StringUtil.equalsIgnoreCase(headerName, HEADER_NOCACHE)) {
+				noCache = Boolean.parseBoolean(headerValue);
+			} else {
+				throw new IllegalArgumentException(headerName + "is not valid HeaderType.");
+			}
+		}
+		// 设置headers参数
+		String fullContentType = contentType + ";charset=" + encoding;
+		response.setContentType(fullContentType);
+		if (noCache) {
+			setNoCacheHeader(response);
 		}
 	}
 }
