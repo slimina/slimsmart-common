@@ -33,7 +33,7 @@ public class HttpUtil {
 		URL url = new URL(uri);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), HeaderUtil.getDefultEnCoding()));
 		while ((line = bufferedReader.readLine()) != null) {
 			result += line;
 		}

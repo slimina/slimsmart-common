@@ -27,7 +27,9 @@ public class HeaderUtil {
 
  	private static final boolean DEFAULT_NOCACHE = true;
   	
-
+ 	public static String getDefultEnCoding(){
+ 		return DEFAULT_ENCODING;
+ 	}
 	/**
 	 * 设置客户端缓存过期时间 的Header.
 	 */
