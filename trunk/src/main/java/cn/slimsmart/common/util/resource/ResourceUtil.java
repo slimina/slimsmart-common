@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
  */
 public class ResourceUtil {
 	
+	private ResourceUtil(){}
+	
 	public static String getResources(String prop) {
 		return getResources("application");
 	}
