@@ -8,6 +8,6 @@ package cn.slimsmart.common.util;
 public class UUID {
 
 	public static String getUUID(){
-		return java.util.UUID.randomUUID().toString().replace("-", "").toUpperCase();
+		return java.util.UUID.randomUUID().toString().replace("-", "").toLowerCase();
 	}
 }

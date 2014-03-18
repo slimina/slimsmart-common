@@ -82,6 +82,6 @@ public class StringUtil extends StringUtils {
 	public static String lowercaseFirstLetter(String str) {
 		char c = str.charAt(0);
 		String temp = new String(c + "");
-		return str.replaceFirst(temp, org.apache.commons.lang.StringUtils.lowerCase(temp));
+		return str.replaceFirst(temp, StringUtils.lowerCase(temp));
 	}
 }

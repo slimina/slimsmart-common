@@ -10,7 +10,11 @@ import java.util.ResourceBundle;
 public class ResourceUtil {
 	
 	public static String getResources(String prop) {
-		ResourceBundle rb = ResourceBundle.getBundle("application");
+		return getResources("application");
+	}
+	
+	public static String getResources(String baseName,String prop) {
+		ResourceBundle rb = ResourceBundle.getBundle(baseName);
 		String result = rb.getString(prop);
 		return result;
 	}
