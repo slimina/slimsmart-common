@@ -15,6 +15,8 @@ public class DateUtil extends DateUtils{
 	private final static SimpleDateFormat YMD= new SimpleDateFormat("yyyy-MM-dd");
 	private final static SimpleDateFormat YMD_HMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+	private DateUtil(){}
+	
 	/**
 	 * 获取当前日期的字符串  yyyy-MM-dd
 	 * @return

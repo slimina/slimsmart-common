@@ -15,6 +15,8 @@ import net.sf.cglib.beans.BeanCopier;
 public class BeanCopierUtil {
 
 	private static final Map<String, BeanCopier> beanCopierMap = new HashMap<String, BeanCopier>();
+	
+	private BeanCopierUtil(){}
 
 	/**
 	 * 

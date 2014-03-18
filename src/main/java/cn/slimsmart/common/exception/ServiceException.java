@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.exception;
+package cn.slimsmart.common.exception;
 
 /**
  * 异常类
