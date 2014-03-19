@@ -22,113 +22,114 @@ import org.apache.commons.lang3.Validate;
  */
 @SuppressWarnings("rawtypes")
 public class ReflectionUtil {
-	
-	private ReflectionUtil(){}
+
+	private ReflectionUtil() {
+	}
 
 	private static final Map<Class, Map<String, Field>> fieldsMap = new HashMap<Class, Map<String, Field>>();
-	
+
 	/**
-     * Class的名称.
-     * 
-     * @param className
-     *            名称
-     * @return 如果没有找到 null
-     */
-    public static Class<?> classForName(final String className) {
-        try {
-            return Class.forName(className);
-        } catch (final ClassNotFoundException e) {
-        	throw new RuntimeException(e.getMessage(), e);
-        }
-    }
+	 * Class的名称.
+	 * 
+	 * @param className
+	 *            名称
+	 * @return 如果没有找到 null
+	 */
+	public static Class<?> classForName(final String className) {
+		try {
+			return Class.forName(className);
+		} catch (final ClassNotFoundException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 
-    /**
-     * 取得构造.
-     * 
-     * @param cls
-     *            Class
-     * @param args
-     *            参数
-     * @return 没有则返回 null
-     */
-    public static Constructor<?> getConstructor(final Class<?> cls, final Class<?>... args) {
-        try {
-            return cls.getDeclaredConstructor(args);
-        } catch (final Exception e) {
-        	throw new RuntimeException(e.getMessage(), e);
-        }
-    }
+	/**
+	 * 取得构造.
+	 * 
+	 * @param cls
+	 *            Class
+	 * @param args
+	 *            参数
+	 * @return 没有则返回 null
+	 */
+	public static Constructor<?> getConstructor(final Class<?> cls, final Class<?>... args) {
+		try {
+			return cls.getDeclaredConstructor(args);
+		} catch (final Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 
-    /**
-     * 新实例.
-     * 
-     * @param <T>
-     *            <T>
-     * @param cls
-     *            Class
-     * @return 新实例
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(final Class<?> cls) {
-        final Constructor<?> con = getConstructor(cls, new Class<?>[0]);
-        return (T) newInstance(con, new Object[0]);
-    }
+	/**
+	 * 新实例.
+	 * 
+	 * @param <T>
+	 *            <T>
+	 * @param cls
+	 *            Class
+	 * @return 新实例
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstance(final Class<?> cls) {
+		final Constructor<?> con = getConstructor(cls, new Class<?>[0]);
+		return (T) newInstance(con, new Object[0]);
+	}
 
-    /**
-     * 新实例.
-     * 
-     * @param <T>
-     *            <T>
-     * @param con
-     *            构造
-     * @param args
-     *            参数
-     * @return 如果没有则返回 null
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(final Constructor<?> con, final Object... args) {
-        try {
-            con.setAccessible(true);
-            return (T) con.newInstance(args);
-        } catch (final Exception e) {
-        	throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-    
-    /**
-     * 新实例.
-     * 
-     * @param <T>
-     *            <T>
-     * @param className
-     *            名称
-     * @return 新实例
-     */
-    public static <T> T newInstance(final String className) {
-        final Class<?> cls = ReflectionUtil.classForName(className);
-        return ReflectionUtil.<T> newInstance(cls);
-    }
+	/**
+	 * 新实例.
+	 * 
+	 * @param <T>
+	 *            <T>
+	 * @param con
+	 *            构造
+	 * @param args
+	 *            参数
+	 * @return 如果没有则返回 null
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T newInstance(final Constructor<?> con, final Object... args) {
+		try {
+			con.setAccessible(true);
+			return (T) con.newInstance(args);
+		} catch (final Exception e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 
-    /**
-     * 新实例.
-     * 
-     * @param <T>
-     *            <T>
-     * @param <T2>
-     *            <T2>
-     * @param className
-     *            名称
-     * @param arg
-     *            参数
-     * @param argValue
-     *            参数值
-     * @return 新实例
-     */
-    public static <T, T2> T newInstance(final String className, final Class<T2> arg, final T2 argValue) {
-        final Class<?> cls = ReflectionUtil.classForName(className);
-        final Constructor<?> con = ReflectionUtil.getConstructor(cls, arg);
-        return ReflectionUtil.<T> newInstance(con, argValue);
-    }
+	/**
+	 * 新实例.
+	 * 
+	 * @param <T>
+	 *            <T>
+	 * @param className
+	 *            名称
+	 * @return 新实例
+	 */
+	public static <T> T newInstance(final String className) {
+		final Class<?> cls = ReflectionUtil.classForName(className);
+		return ReflectionUtil.<T> newInstance(cls);
+	}
+
+	/**
+	 * 新实例.
+	 * 
+	 * @param <T>
+	 *            <T>
+	 * @param <T2>
+	 *            <T2>
+	 * @param className
+	 *            名称
+	 * @param arg
+	 *            参数
+	 * @param argValue
+	 *            参数值
+	 * @return 新实例
+	 */
+	public static <T, T2> T newInstance(final String className, final Class<T2> arg, final T2 argValue) {
+		final Class<?> cls = ReflectionUtil.classForName(className);
+		final Constructor<?> con = ReflectionUtil.getConstructor(cls, arg);
+		return ReflectionUtil.<T> newInstance(con, argValue);
+	}
 
 	public static void putField(Class clazz, String fieldName, Field field) {
 		Validate.notNull(clazz, "clazz can't be null");
@@ -362,7 +363,7 @@ public class ReflectionUtil {
 			method.setAccessible(true);
 		}
 	}
-	
+
 	/**
 	 * 将一个 Map 对象转化为一个 JavaBean
 	 * 
@@ -401,7 +402,7 @@ public class ReflectionUtil {
 		}
 		return obj;
 	}
-	
+
 	/**
 	 * 将一个 JavaBean 对象转化为一个 Map
 	 * 
@@ -422,8 +423,8 @@ public class ReflectionUtil {
 				String propertyName = descriptor.getName();
 				if (!propertyName.equals("class")) {
 					Method readMethod = descriptor.getReadMethod();
-					//当有set方法，没有属性时readMethod为null 
-					if(readMethod!=null){
+					// 当有set方法，没有属性时readMethod为null
+					if (readMethod != null) {
 						Object result = readMethod.invoke(bean, new Object[0]);
 						if (result != null) {
 							returnMap.put(propertyName, result);

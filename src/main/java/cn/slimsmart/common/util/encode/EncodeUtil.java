@@ -1,8 +1,11 @@
 package cn.slimsmart.common.util.encode;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -21,8 +24,9 @@ public class EncodeUtil {
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 	private static final String DEFAULT_ALGORITHM = "MD5";
-	
-	private EncodeUtil(){}
+
+	private EncodeUtil() {
+	}
 
 	/**
 	 * Hex编码.
@@ -128,9 +132,9 @@ public class EncodeUtil {
 	}
 
 	/**
-	 * MD5编码
+	 * 字符串MD5编码
 	 */
-	public static String md5Encode(String input) {
+	public static String MD5Encode(String input) {
 		try {
 			MessageDigest md5 = MessageDigest.getInstance(DEFAULT_ALGORITHM);
 			md5.update(input.getBytes());
@@ -139,6 +143,33 @@ public class EncodeUtil {
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * 文件MD5编码
+	 */
+	public final static String MD5FileEncode(File inputFile) {
+		int bufferSize = 256 * 1024;// 定义缓冲区大小
+		FileInputStream fileInputStream = null;
+		DigestInputStream digestInputStream = null;
+		try {
+			MessageDigest messageDigest = MessageDigest.getInstance(DEFAULT_ALGORITHM);
+			fileInputStream = new FileInputStream(inputFile);
+			digestInputStream = new DigestInputStream(fileInputStream, messageDigest);
+			byte[] buffer = new byte[bufferSize];
+			while (digestInputStream.read(buffer) > 0)
+				;
+			messageDigest = digestInputStream.getMessageDigest();
+			byte[] resultByteArray = messageDigest.digest();
+			return hexEncode(resultByteArray);
+		} catch (Exception e) {
+		} finally {
+			try {
+				digestInputStream.close();
+			} catch (Exception e2) {
+			}
+		}
+		return null;
 	}
 
 	public static String escape(String src) {
