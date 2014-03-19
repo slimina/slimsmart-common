@@ -24,8 +24,7 @@ public class BeanCopierUtil {
 	 * @param: @param source  bean源
 	 * @param: @param target  bean目标
 	 */
-	public static void copyProperties(Object source, Object target) {
-		
+	public static <X> X copyProperties(Object source, X target) {
 		String beanKey = generateKey(source.getClass(), target.getClass());
 		BeanCopier copier = null;
 		if (!beanCopierMap.containsKey(beanKey)) {
@@ -35,6 +34,7 @@ public class BeanCopierUtil {
 			copier = beanCopierMap.get(beanKey);
 		}
 		copier.copy(source, target, null);
+		return target;
 	}
 
 	private static String generateKey(Class<?> class1, Class<?> class2) {
