@@ -21,11 +21,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- <dependency> -->
-		<!-- <groupId>apache-lang</groupId> -->
-		<!-- <artifactId>commons-lang</artifactId> -->
-		<!-- <version>${commons-lang}</version> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
