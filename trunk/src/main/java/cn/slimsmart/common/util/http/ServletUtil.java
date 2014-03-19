@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.slimsmart.common.http.ResponseMsg;
 import cn.slimsmart.common.util.json.JsonUtil;
 import cn.slimsmart.common.util.string.StringUtil;
 
@@ -83,7 +84,6 @@ public class ServletUtil {
 		render(response,JSON_TYPE, jsonString, headers);
 	}
 
-	
 
 	/**
 	 * 直接输出JSON
@@ -101,6 +101,15 @@ public class ServletUtil {
 		}
 	}
 	
+	/**
+	 * 直接输出JSON
+	 * @param response
+	 * @param msg
+	 * @param headers
+	 */
+	public static void renderJson(final HttpServletResponse response,final ResponseMsg msg, final String... headers) {
+		renderJson(response,msg,headers);
+	}
 	/**
 	 * 直接输出excel
 	 * 
