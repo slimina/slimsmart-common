@@ -8,7 +8,7 @@ import java.util.Collection;
  * @author Zhu.TW
  * 
  */
-public class Pagination<T> extends BaseSerializable{
+public class Paginator<T> extends BaseSerializable{
 
 	private static final long serialVersionUID = 1L;
 

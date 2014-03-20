@@ -24,6 +24,7 @@ public class EncodeUtil {
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
 	private static final String DEFAULT_ALGORITHM = "MD5";
+	private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
 	private EncodeUtil() {
 	}
@@ -65,6 +66,18 @@ public class EncodeUtil {
 	 */
 	public static byte[] base64Decode(String input) {
 		return Base64.decodeBase64(input);
+	}
+	
+	
+	/**
+	 * Base62编码。
+	 */
+	public static String encodeBase62(byte[] input) {
+		char[] chars = new char[input.length];
+		for (int i = 0; i < input.length; i++) {
+			chars[i] = BASE62[((input[i] & 0xFF) % BASE62.length)];
+		}
+		return new String(chars);
 	}
 
 	/**
