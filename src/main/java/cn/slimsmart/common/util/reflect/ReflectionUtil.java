@@ -283,37 +283,54 @@ public class ReflectionUtil {
 	 * 用于一次性调用的情况，否则应使用getAccessibleMethod()函数获得Method后反复调用. 同时匹配方法名+参数类型，
 	 */
 	public static Object invokeMethod(final Object obj, final String methodName, final Class<?>[] parameterTypes, final Object[] args) {
-		Method method = getAccessibleMethod(obj, methodName, parameterTypes);
+		Object bean = null;
+		if(obj instanceof String){
+			bean = newInstance((String)obj);
+		}else if(obj instanceof Class){
+			bean = newInstance((Class)obj);
+		}else{
+			bean = obj;
+		}
+		Method method = getAccessibleMethod(bean, methodName, parameterTypes);
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + obj + "]");
 		}
 		try {
-			return method.invoke(obj, args);
+			return method.invoke(bean, args);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
 
 	/**
+	 * obj is className or Class or entity
 	 * 直接调用对象方法, 无视private/protected修饰符，
 	 * 用于一次性调用的情况，否则应使用getAccessibleMethodByName()函数获得Method后反复调用.
 	 * 只匹配函数名，如果有多个同名函数调用第一个。
 	 */
 	public static Object invokeMethodByName(final Object obj, final String methodName, final Object[] args) {
-		Method method = getAccessibleMethodByName(obj, methodName);
+		Object bean = null;
+		if(obj instanceof String){
+			bean = newInstance((String)obj);
+		}else if(obj instanceof Class){
+			bean = newInstance((Class)obj);
+		}else{
+			bean = obj;
+		}
+		Method method = getAccessibleMethodByName(bean, methodName);
 		if (method == null) {
 			throw new IllegalArgumentException("Could not find method [" + methodName + "] on target [" + obj + "]");
 		}
 		try {
-			return method.invoke(obj, args);
+			return method.invoke(bean, args);
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
 	}
-
 	/**
 	 * 循环向上转型, 获取对象的DeclaredMethod,并强制设置为可访问. 如向上转型到Object仍无法找到, 返回null.
 	 * 匹配函数名+参数类型。
+	 * obj is className or Class or entity
 	 * 
 	 * 用于方法需要被多次调用的情况. 先使用本函数先取得Method,然后调用Method.invoke(Object obj, Object...
 	 * args)

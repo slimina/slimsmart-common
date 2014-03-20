@@ -103,7 +103,7 @@ public class TaskPool {
 				_pool = new ThreadPoolExecutor(Math.max(1, poolSize), Math.max(4, poolSize), 5000L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(),
 						factory, new ThreadPoolExecutor.AbortPolicy());
 				_poollist.put(TaskPool.this.name + "0", _pool);
-				log.log(Level.FINE, "TaskPool max: " + poolSize + "   started.");
+				log.log(Level.INFO, "TaskPool max: " + poolSize + "   started.");
 			}
 		}
 		return this;
@@ -120,7 +120,7 @@ public class TaskPool {
 				for (Future<?> f : calls) {
 					f.get();
 				}
-				log.log(Level.FINE, "The tasks completed take " + (System.currentTimeMillis() - last) + "ms.");
+				log.log(Level.INFO, "The tasks completed take " + (System.currentTimeMillis() - last) + "ms.");
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 				throw new RuntimeException("TaskPool completeTask Error", e);

@@ -1,5 +1,6 @@
 package cn.slimsmart.common.exception;
 
+
 /**
  * 异常类
  * @author Zhu.TW
