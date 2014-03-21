@@ -1,8 +1,9 @@
-package cn.slimsmart.common.annotation;
+package cn.slimsmart.common.log.support;
 
 /**
- * log4j 输出定义   在拦截器中加入，log4j配置中取出打印
- * MDC.put(MDCKey.USER_NAME.toString(), userName.toString());
+ * log4j 输出定义 在拦截器中加入，log4j配置中取出打印 MDC.put(MDCKey.USER_NAME.toString(),
+ * userName.toString());
+ * 
  * @author Zhu.TW
  */
 public enum MDCKey {

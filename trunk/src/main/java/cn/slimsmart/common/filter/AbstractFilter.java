@@ -10,20 +10,21 @@ import javax.servlet.ServletResponse;
 
 /**
  * Filter 抽象类，提供过滤前和后的处理方法
+ * 
  * @author Zhu.TW
- *
+ * 
  */
-public abstract class AbstractFilter implements Filter{
+public abstract class AbstractFilter implements Filter {
 
 	public abstract void beforeFilter(ServletRequest request, ServletResponse response);
-	
+
 	public abstract void afterFilter(ServletRequest request, ServletResponse response);
-	
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		beforeFilter(request,response);
+		beforeFilter(request, response);
 		chain.doFilter(request, response);
-		afterFilter(request,response);
+		afterFilter(request, response);
 	}
 
 }
