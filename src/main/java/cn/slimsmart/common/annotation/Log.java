@@ -9,5 +9,6 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Log {
 	String moduleName();
-	String description();
+
+	String description() default "";
 }

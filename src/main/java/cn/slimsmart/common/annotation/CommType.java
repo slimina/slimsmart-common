@@ -5,10 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DataAuth {
-	String authIdentify();
+public @interface CommType {
+	int type();
 
-	String description() default "";
+	boolean value();
+
+	String message() default "";
 }
