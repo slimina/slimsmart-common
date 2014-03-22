@@ -16,8 +16,8 @@ import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 
-import cn.slimsmart.common.document.exception.DocumentException;
 import cn.slimsmart.common.document.word.support.WordType;
+import cn.slimsmart.common.exception.DocumentException;
 
 public class WordTool {
 	

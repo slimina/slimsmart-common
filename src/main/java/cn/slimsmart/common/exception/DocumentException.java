@@ -3,7 +3,7 @@
  * Copyright(C) 2014-2015
  * 2013年3月14日 下午2:33:27 
  */
-package cn.slimsmart.common.document.exception;
+package cn.slimsmart.common.exception;
 
 public class DocumentException extends RuntimeException {
 
