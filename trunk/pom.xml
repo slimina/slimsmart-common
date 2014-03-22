@@ -17,14 +17,15 @@
 		<cglib.version>2.2</cglib.version>
 		<jackson.version>1.9.12</jackson.version>
 		<servlet.version>2.5</servlet.version>
-		<poi.version>3.9</poi.version>
+		<poi.version>3.10-FINAL</poi.version>
+		<commons-codec>1.8</commons-codec>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.8</version>
+			<version>${commons-codec}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

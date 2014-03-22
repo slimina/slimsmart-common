@@ -1,4 +1,4 @@
-package cn.slimsmart.common.annotation.support;
+package cn.slimsmart.common.validate.annotation.support;
 
 public class ValidateTypes {
 

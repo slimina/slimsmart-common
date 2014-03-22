@@ -1,10 +1,11 @@
-package cn.slimsmart.common.annotation.support;
+package cn.slimsmart.common.document.excel.annotation.support;
 
 public class Types {
 
 	private Types() {
 	}
 
+	public static final int POJO = -1;
 	public static final int NULL = 0;
 	public static final int BYTE = 1;
 	public static final int SHORT = 2;
