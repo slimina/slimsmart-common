@@ -19,7 +19,8 @@ public class TestExcel extends TestCase{
 	
 	@Test
 	public void testExportExcel() throws IOException{
-		File file = new File("user.xls");
+		String path = "src/test/java/"+TestExcel.class.getPackage().getName().replaceAll(".", "/");
+		File file = new File(path.toString()+"/"+User.class.getSimpleName()+".xls");
 		FileOutputStream out = new FileOutputStream(file);
 		ExportExcel<User> user = new ExportExcel<User>(User.class);
 		List<User> list = new ArrayList<User>();
