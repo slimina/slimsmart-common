@@ -1,5 +1,6 @@
 package cn.slimsmart.common.util.date;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -12,8 +13,11 @@ import org.apache.commons.lang3.time.DateUtils;
  */
 public class DateUtil extends DateUtils{
 	
-	private final static SimpleDateFormat YMD= new SimpleDateFormat("yyyy-MM-dd");
-	private final static SimpleDateFormat YMD_HMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	public final static String YYYY_MM_DD="yyyy-MM-dd";
+	public final static String YYYY_MM_DD_HH_MM_SS="yyyy-MM-dd HH:mm:ss";
+	
+	public final static SimpleDateFormat YMD= new SimpleDateFormat(YYYY_MM_DD);
+	public final static SimpleDateFormat YMD_HMS = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
 
 	private DateUtil(){}
 	
@@ -31,5 +35,19 @@ public class DateUtil extends DateUtils{
 	 */
 	public static String getCurrentDateYMDHMS() {
 		return YMD_HMS.format(new Date());
+	}
+	
+	public static String getFormatDateStr(Date date,String format) {
+		return new SimpleDateFormat(format).format(new Date());
+	}
+	
+	public static Date getFormatDate(String dateStr,String format) {
+		Date date=null;
+		try {
+			date = new SimpleDateFormat(format).parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
 	}
 }
