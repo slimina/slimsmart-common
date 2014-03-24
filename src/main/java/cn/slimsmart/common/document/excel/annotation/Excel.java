@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Excel {
 	String title();
-	int defaultColumnWidth() default 15;
-	short defaultRowHeight() default 1;
-	String author() default "";
-	String comment() default "";
+	short rowHeight() default 20;
+	int columnWidth() default 10;
 }

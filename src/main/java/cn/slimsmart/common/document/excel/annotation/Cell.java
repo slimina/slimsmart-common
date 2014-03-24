@@ -12,21 +12,22 @@ import cn.slimsmart.common.validate.annotation.Regex;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Cell {
-	String title() default "";
-	int columnWidth() default 15;
-	int columnIndex();
+	String display() default "";
+	
+	int width() default 10;
+	int index();
+	int length() default 1;
 
 	String defaultValue() default "";
 	int type() default Types.STRING;
 	
-	int maxlength() default Integer.MAX_VALUE;
-	int minlength() default 0;
-	
 	//时间、日期转换格式
 	String dataFormat() default "";
-
-	CommType[] types() default {};
-
+	
+	int maxlength() default Integer.MAX_VALUE;
+	int minlength() default 0;
+	//校验
+	CommType[] validateTypes() default {};
 	// 支持正则表达式
 	Regex[] Regexs() default {};
 }

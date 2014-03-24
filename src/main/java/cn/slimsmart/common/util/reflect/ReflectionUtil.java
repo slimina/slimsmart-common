@@ -163,6 +163,15 @@ public class ReflectionUtil {
 		if (field == null) {
 			throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
 		}
+		return getFieldValue(object,field);
+	}
+	
+	/**
+	 * 直接读取对象属性值,无视private/protected修饰符,不经过getter函数.
+	 */
+	public static Object getFieldValue(final Object object, final Field field) {
+		Validate.notNull(object, "object can't be null");
+		Validate.notNull(field, "field can't be null");
 
 		Object result = null;
 		try {
@@ -218,7 +227,10 @@ public class ReflectionUtil {
 	 * 循环向上转型,获取类的DeclaredField.
 	 */
 	public static Map<String, Field> getDeclaredFieldMap(Object valueBean) {
-		Class clazz = valueBean.getClass();
+		return getDeclaredFieldMap(valueBean.getClass());
+	}
+	
+	public static Map<String, Field> getDeclaredFieldMap(Class clazz) {
 		Map<String, Field> fieldMap = new HashMap<String, Field>();
 		Field[] fields = clazz.getDeclaredFields();
 		Method[] methods = clazz.getDeclaredMethods();
