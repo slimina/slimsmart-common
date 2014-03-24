@@ -5,7 +5,7 @@ public class ExcelType {
 	private ExcelType() {
 	}
 
-	public static final int excel2003 = 0;
+	public static final int EXCEL_2003 = 0;
 
-	public static final int excel2007 = 1;
+	public static final int EXCEL_2007 = 1;
 }

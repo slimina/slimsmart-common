@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.date;
+package cn.slimsmart.common.util.common.date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cn.slimsmart.common.http.ResponseMsg;
+import cn.slimsmart.common.util.common.string.StringUtil;
 import cn.slimsmart.common.util.json.JsonUtil;
-import cn.slimsmart.common.util.string.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class ServletUtil {

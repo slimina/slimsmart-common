@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.xml;
+package cn.slimsmart.common.util.document.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

@@ -5,7 +5,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cn.slimsmart.common.util.string.StringUtil;
+import cn.slimsmart.common.util.common.string.StringUtil;
 
 public class HeaderUtil {
 	

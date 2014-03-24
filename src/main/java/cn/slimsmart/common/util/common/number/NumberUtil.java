@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.number;
+package cn.slimsmart.common.util.common.number;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
