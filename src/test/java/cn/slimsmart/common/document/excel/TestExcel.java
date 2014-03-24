@@ -9,6 +9,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import cn.slimsmart.common.document.excel.bean.Score;
@@ -17,10 +18,16 @@ import cn.slimsmart.common.util.date.DateUtil;
 
 public class TestExcel extends TestCase{
 	
+	private String path = null;
+	
+	@Before
+	public void setUp(){
+		path = "src/test/java/"+TestExcel.class.getPackage().getName().replaceAll(".", "/")+"/";
+	}
+	
 	@Test
 	public void testExportExcel() throws IOException{
-		String path = "src/test/java/"+TestExcel.class.getPackage().getName().replaceAll(".", "/");
-		File file = new File(path.toString()+"/"+User.class.getSimpleName()+".xls");
+		File file = new File(path+User.class.getSimpleName()+".xls");
 		FileOutputStream out = new FileOutputStream(file);
 		ExportExcel<User> user = new ExportExcel<User>(User.class);
 		List<User> list = new ArrayList<User>();
