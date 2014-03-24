@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.string;
+package cn.slimsmart.common.util.common.string;
 
 import org.apache.commons.lang3.StringUtils;
 

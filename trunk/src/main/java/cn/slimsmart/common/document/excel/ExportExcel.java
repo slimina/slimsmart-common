@@ -22,11 +22,10 @@ import cn.slimsmart.common.document.excel.annotation.ExcelAnnotationTool;
 import cn.slimsmart.common.document.excel.annotation.support.CellMeta;
 import cn.slimsmart.common.document.excel.annotation.support.Types;
 import cn.slimsmart.common.document.excel.style.Styles;
-import cn.slimsmart.common.util.date.DateUtil;
+import cn.slimsmart.common.util.common.date.DateUtil;
+import cn.slimsmart.common.util.common.string.StringUtil;
 import cn.slimsmart.common.util.reflect.ReflectionUtil;
-import cn.slimsmart.common.util.string.StringUtil;
 
-//http://blog.csdn.net/feg545/article/details/11983429
 //http://blog.sina.com.cn/s/blog_49f779790101ck67.html
 @SuppressWarnings({ "deprecation", "rawtypes" })
 public class ExportExcel<T> {

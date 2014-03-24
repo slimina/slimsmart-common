@@ -1,4 +1,4 @@
-package cn.slimsmart.common.util.image;
+package cn.slimsmart.common.util.document.image;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
