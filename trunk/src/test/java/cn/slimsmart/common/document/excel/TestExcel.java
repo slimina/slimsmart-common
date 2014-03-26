@@ -9,12 +9,17 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 
 import cn.slimsmart.common.document.excel.bean.Score;
 import cn.slimsmart.common.document.excel.bean.User;
-import cn.slimsmart.common.util.date.DateUtil;
+import cn.slimsmart.common.document.excel.support.ExcelType;
+import cn.slimsmart.common.util.common.date.DateUtil;
+import cn.slimsmart.common.util.document.excel.ExcelUtil;
 
 public class TestExcel extends TestCase{
 	
@@ -27,7 +32,7 @@ public class TestExcel extends TestCase{
 	
 	@Test
 	public void testExportExcel() throws IOException{
-		File file = new File(path+User.class.getSimpleName()+".xls");
+		File file = new File(path+User.class.getSimpleName()+".xlsx");
 		FileOutputStream out = new FileOutputStream(file);
 		ExportExcel<User> user = new ExportExcel<User>(User.class);
 		List<User> list = new ArrayList<User>();
@@ -61,6 +66,17 @@ public class TestExcel extends TestCase{
 		u2.setScore(score2);
 		list.add(u2);
 		
-		user.exportExcel(list, out);
+		user.exportExcel(list, out,ExcelType.EXCEL_2007);
 	}
+	
+	public void testExcelSelect() throws IOException {  
+        Workbook wb = new XSSFWorkbook();;// excel文件对象  
+        Sheet sheetlist = wb.createSheet("sheetlist");// 工作表对象  
+        FileOutputStream out = new FileOutputStream("d:\\success.xlsx");  
+        String[] textlist = { "列表1", "列表2", "列表3", "列表4", "列表5" };  
+        sheetlist = ExcelUtil.setValidation(sheetlist, textlist, 0, Integer.MAX_VALUE, 0, 0);// 第一列的前2147483647行都设置为选择列表形式.  
+        sheetlist = ExcelUtil.setPrompt(sheetlist, "提示信息", "不能为空",0, Integer.MAX_VALUE, 1, 1);// 第二列的前2147483647行都设置提示.  
+        wb.write(out);  
+        out.close();  
+    }  
 }

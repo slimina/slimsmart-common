@@ -1,68 +1,70 @@
 package cn.slimsmart.common.document.excel.style;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFHyperlink;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.BLACK;
+import org.apache.poi.hssf.util.HSSFColor.GREY_25_PERCENT;
+import org.apache.poi.hssf.util.HSSFColor.LIGHT_YELLOW;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public class Styles {
 
 	private Styles() {
 	}
 
-	public static HSSFCellStyle getTitleStyle(HSSFWorkbook workbook) {
-		HSSFCellStyle style = workbook.createCellStyle();
+	public static CellStyle getTitleStyle(Workbook workbook) {
+		CellStyle style = workbook.createCellStyle();
 		// 设置这些样式
-		style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		style.setFillForegroundColor(GREY_25_PERCENT.index);
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		// 生成一个字体
-		HSSFFont font = workbook.createFont();
-		font.setColor(HSSFColor.BLACK.index);
+		Font font = workbook.createFont();
+		font.setColor(BLACK.index);
 		font.setFontHeightInPoints((short) 12);
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
 		// 把字体应用到当前的样式
 		style.setFont(font);
 		return style;
 	}
 
-	public static HSSFCellStyle getCellStyle(HSSFWorkbook workbook) {
-		HSSFCellStyle style = workbook.createCellStyle();
-		style.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
-		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	public static CellStyle getCellStyle(Workbook workbook) {
+		CellStyle style = workbook.createCellStyle();
+		style.setFillForegroundColor(LIGHT_YELLOW.index);
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		// 自动换行 
 		style.setWrapText(true);
 		// 生成字体
-		HSSFFont font = workbook.createFont();
-		font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+		Font font = workbook.createFont();
+		font.setBoldweight(Font.BOLDWEIGHT_NORMAL);
 		// 把字体应用到当前的样式
 		style.setFont(font);
 		return style;
 	}
 	
-	public static HSSFCellStyle getCellDateStyle(HSSFWorkbook workbook,String format){
+	public static CellStyle getCellDateStyle(Workbook workbook,String format){
 		 CreationHelper createHelper = workbook.getCreationHelper(); 
-		HSSFCellStyle style = getCellStyle(workbook);
-		style.setDataFormat(createHelper.createDataFormat().getFormat(format));
-		return style;
+		 CellStyle style = getCellStyle(workbook);
+		 style.setDataFormat(createHelper.createDataFormat().getFormat(format));
+		 return style;
 	}
 	
-	public static HSSFHyperlink getCellLinkStyle(String url){
-		HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);  
+	public static Hyperlink getCellLinkStyle(Workbook workbook,String url){
+		Hyperlink link = workbook.getCreationHelper().createHyperlink(Hyperlink.LINK_URL);
 	    link.setAddress(url); 
 		return link;
 	}

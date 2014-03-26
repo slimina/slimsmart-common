@@ -9,13 +9,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import cn.slimsmart.common.document.excel.annotation.Excel;
 import cn.slimsmart.common.document.excel.annotation.ExcelAnnotationTool;
@@ -24,9 +24,13 @@ import cn.slimsmart.common.document.excel.annotation.support.Types;
 import cn.slimsmart.common.document.excel.style.Styles;
 import cn.slimsmart.common.util.common.date.DateUtil;
 import cn.slimsmart.common.util.common.string.StringUtil;
+import cn.slimsmart.common.util.document.excel.ExcelUtil;
 import cn.slimsmart.common.util.reflect.ReflectionUtil;
 
 //http://blog.sina.com.cn/s/blog_49f779790101ck67.html
+//http://www.doc88.com/p-206930999655.html
+//http://blog.sina.com.cn/s/blog_9c760553010172v5.html
+//http://www.oschina.net/question/166633_82410
 @SuppressWarnings({ "deprecation", "rawtypes" })
 public class ExportExcel<T> {
 
@@ -36,42 +40,43 @@ public class ExportExcel<T> {
 		this.entityClass = clazz;
 	}
 
-	private void renderHeaders(final HSSFWorkbook workbook, final HSSFSheet sheet, final Map<String, Object> cellMeats, final int level, final int headLevel) {
+	private void renderHeaders(final Workbook workbook, final Sheet sheet, final Map<String, Object> cellMeats, final int level, final int headLevel) {
 		// 产生表格标题行
-		HSSFRow row = sheet.createRow(level);
-		HSSFCell cell = null;
+		Row row = sheet.createRow(level);
+		Cell cell = null;
 		for (Entry entry : cellMeats.entrySet()) {
 			CellMeta cellMeat = (CellMeta) entry.getValue();
 			switch (cellMeat.getCell().type()) {
 			case Types.BOOLEAN:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_BOOLEAN);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_BOOLEAN);
 				break;
 			case Types.INTEGER:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				break;
 			case Types.LONG:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				break;
 			case Types.FLOAT:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				break;
 			case Types.DOUBLE:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				break;
 			case Types.STRING:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				break;
 			case Types.DATE:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				break;
 			case Types.POJO:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				break;
 			default:
 				cell = row.createCell(Integer.valueOf(entry.getKey().toString()));
 				break;
 			}
-			HSSFRichTextString text = new HSSFRichTextString(cellMeat.getDisplay());
+			
+			RichTextString text = workbook.getCreationHelper().createRichTextString(cellMeat.getDisplay());
 			cell.setCellValue(text);
 			if (level == 0 && cellMeat.getCell().type() != Types.POJO) {
 				sheet.addMergedRegion(new CellRangeAddress(0, headLevel - 1, Integer.valueOf(entry.getKey().toString()), Integer.valueOf(entry.getKey()
@@ -85,24 +90,24 @@ public class ExportExcel<T> {
 		}
 	}
 
-	public void exportExcel(Collection<T> dataset, OutputStream out) {
+	public void exportExcel(Collection<T> dataset, OutputStream out,int excelType) {
 		Excel excelAnnotation = ExcelAnnotationTool.getTypeExcelAnnotation(entityClass);
 		// 声明一个工作薄
-		HSSFWorkbook workbook = new HSSFWorkbook();
+		Workbook workbook = ExcelUtil.getWorkbook(excelType);
 		// 生成一个表格
-		HSSFSheet sheet = workbook.createSheet(excelAnnotation.title());
+		Sheet sheet = workbook.createSheet(excelAnnotation.title());
 		Map<String, Object> cellMeats = ExcelAnnotationTool.getFieldCellMeats(entityClass,true);
 		int rowLen = ExcelAnnotationTool.getRowCount(entityClass);
 		int colLen = (Integer) cellMeats.get(ExcelAnnotationTool.COLUMN_LENGTH);
 		cellMeats.remove(ExcelAnnotationTool.COLUMN_LENGTH);
 		renderHeaders(workbook, sheet, cellMeats, 0, rowLen);
-		HSSFRow row = null;
+		Row row = null;
 		for (int i = 0; i < rowLen; i++) {
 			row = sheet.getRow(i);
 			if (row == null)
 				row = sheet.createRow(i);
 			for (int j = 0; j < colLen; j++) {
-				HSSFCell cell = row.getCell(j);
+				Cell cell = row.getCell(j);
 				if (cell == null) {
 					cell = row.createCell(j);
 					cell.setCellValue("");
@@ -129,37 +134,37 @@ public class ExportExcel<T> {
 		}
 	}
 
-	private void fillRowData(final HSSFWorkbook workbook, final HSSFRow row, Object obj, Map<String, Object> cellMeats) {
-		HSSFCell cell = null;
-		HSSFSheet sheet = workbook.getSheetAt(0);
+	private void fillRowData(final Workbook workbook, final Row row, Object obj, Map<String, Object> cellMeats) {
+		Cell cell = null;
+		Sheet sheet = workbook.getSheetAt(0);
 		for (Entry entry : cellMeats.entrySet()) {
 			CellMeta cellMeat = (CellMeta) entry.getValue();
 			sheet.setColumnWidth(Integer.valueOf(entry.getKey().toString()), cellMeat.getCell().width()*256);
 			Object value =null;
-			HSSFRichTextString text = null;
-			HSSFCellStyle cellStyle = Styles.getCellStyle(workbook);
+			RichTextString text = null;
+			CellStyle cellStyle = Styles.getCellStyle(workbook);
 			switch (cellMeat.getCell().type()) {
 			//数据验证待添加
 			case Types.BOOLEAN:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_BOOLEAN);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_BOOLEAN);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				cell.setCellValue((Boolean)value);
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.INTEGER:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				cell.setCellValue(Double.valueOf(value.toString()));
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.LONG:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				cell.setCellValue(Double.valueOf(value.toString()));
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.FLOAT:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				if(StringUtil.isNotBlank(cellMeat.getCell().dataFormat())){
 					DecimalFormat df=new DecimalFormat(cellMeat.getCell().dataFormat()); 
@@ -170,7 +175,7 @@ public class ExportExcel<T> {
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.DOUBLE:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_NUMERIC);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_NUMERIC);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				if(StringUtil.isNotBlank(cellMeat.getCell().dataFormat())){
 					DecimalFormat df=new DecimalFormat(cellMeat.getCell().dataFormat()); 
@@ -181,17 +186,17 @@ public class ExportExcel<T> {
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.STRING:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				if(StringUtil.isNotBlank(cellMeat.getCell().dataFormat())){
 					value = StringUtil.format(cellMeat.getCell().dataFormat(), value.toString());
 				}
-				text = new HSSFRichTextString(value.toString());
+				text = workbook.getCreationHelper().createRichTextString(value.toString());
 				cell.setCellValue(text);
 				cell.setCellStyle(cellStyle);
 				break;
 			case Types.DATE:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
 				String dateFormat =StringUtil.isBlank(cellMeat.getCell().dataFormat()) ? 
 						DateUtil.YYYY_MM_DD_HH_MM_SS:cellMeat.getCell().dataFormat();
@@ -199,12 +204,12 @@ public class ExportExcel<T> {
 				cell.setCellStyle(Styles.getCellDateStyle(workbook,dateFormat));
 				break;
 			case Types.LINK:
-				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), HSSFCell.CELL_TYPE_STRING);
+				cell = row.createCell(Integer.valueOf(entry.getKey().toString()), Cell.CELL_TYPE_STRING);
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
-				text = new HSSFRichTextString(String.valueOf(value));
+				text = workbook.getCreationHelper().createRichTextString(String.valueOf(value));
 				cell.setCellValue(text);
 				cell.setCellStyle(cellStyle);
-				cell.setHyperlink(Styles.getCellLinkStyle(String.valueOf(value)));
+				cell.setHyperlink(Styles.getCellLinkStyle(workbook,String.valueOf(value)));
 				break;
 			case Types.POJO:
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
@@ -213,7 +218,7 @@ public class ExportExcel<T> {
 			default:
 				cell = row.createCell(Integer.valueOf(entry.getKey().toString()));
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
-				text = new HSSFRichTextString(value.toString());
+				text = workbook.getCreationHelper().createRichTextString(String.valueOf(value));
 				cell.setCellValue(text);
 				cell.setCellStyle(cellStyle);
 				break;

@@ -1,10 +1,15 @@
 package cn.slimsmart.common.util.document.excel;
 
-import org.apache.poi.hssf.usermodel.DVConstraint;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDataValidation;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataValidation;
+import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import cn.slimsmart.common.document.excel.support.ExcelType;
 
 @SuppressWarnings("unchecked")
 public class ExcelUtil {
@@ -16,26 +21,26 @@ public class ExcelUtil {
 	 * @param cell
 	 * @return
 	 */
-	public <X> X getCellStringValue(HSSFCell cell) {      
+	public <X> X getCellStringValue(Cell cell) {      
         X cellValue = null;      
         switch (cell.getCellType()) {      
-        case HSSFCell.CELL_TYPE_STRING://字符串类型  
+        case Cell.CELL_TYPE_STRING://字符串类型  
         	cellValue = (X)cell.getStringCellValue();     
         	 break;
-        case HSSFCell.CELL_TYPE_NUMERIC: //数值类型  
+        case Cell.CELL_TYPE_NUMERIC: //数值类型  
         	cellValue = (X)Double.valueOf(cell.getNumericCellValue());      
             break;      
-        case HSSFCell.CELL_TYPE_FORMULA: //公式  
-            cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);      
+        case Cell.CELL_TYPE_FORMULA: //公式  
+            cell.setCellType(Cell.CELL_TYPE_NUMERIC);      
             cellValue = (X)Double.valueOf(cell.getNumericCellValue());     
             break;      
-        case HSSFCell.CELL_TYPE_BLANK:  //空白    
+        case Cell.CELL_TYPE_BLANK:  //空白    
             cellValue=(X)"";      
             break;      
-        case HSSFCell.CELL_TYPE_BOOLEAN: //boolean
+        case Cell.CELL_TYPE_BOOLEAN: //boolean
         	cellValue=(X)Boolean.valueOf(cell.getBooleanCellValue());
             break;      
-        case HSSFCell.CELL_TYPE_ERROR: //错误信息
+        case Cell.CELL_TYPE_ERROR: //错误信息
         	cellValue = (X)Byte.valueOf(cell.getErrorCellValue());
             break;      
         default:      
@@ -56,14 +61,14 @@ public class ExcelUtil {
      * @param endCol  结束列 
      * @return 设置好的sheet. 
      */ 
-	public static HSSFSheet setHSSFPrompt(HSSFSheet sheet, String promptTitle,  
+	public static Sheet setPrompt(Sheet sheet, String promptTitle,  
             String promptContent, int firstRow, int endRow ,int firstCol,int endCol) {  
         // 构造constraint对象  
-        DVConstraint constraint = DVConstraint.createCustomFormulaConstraint("IV1");  
+		DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint("IV1");  
         // 四个参数分别是：起始行、终止行、起始列、终止列  
         CellRangeAddressList regions = new CellRangeAddressList(firstRow,endRow,firstCol, endCol);  
         // 数据有效性对象  
-        HSSFDataValidation data_validation_view = new HSSFDataValidation(regions,constraint);  
+        DataValidation data_validation_view = sheet.getDataValidationHelper().createValidation(constraint,regions);
         data_validation_view.createPromptBox(promptTitle, promptContent);  
         sheet.addValidationData(data_validation_view);  
         return sheet;  
@@ -79,16 +84,32 @@ public class ExcelUtil {
      * @param endCol  结束列 
      * @return 设置好的sheet. 
      */  
-    public static HSSFSheet setHSSFValidation(HSSFSheet sheet,  
+    public static Sheet setValidation(Sheet sheet,  
             String[] textlist, int firstRow, int endRow, int firstCol,  
             int endCol) {  
         // 加载下拉列表内容  
-        DVConstraint constraint = DVConstraint.createExplicitListConstraint(textlist);  
+    	DataValidationConstraint constraint = sheet.getDataValidationHelper().createExplicitListConstraint(textlist);  
         // 设置数据有效性加载在哪个单元格上,四个参数分别是：起始行、终止行、起始列、终止列  
         CellRangeAddressList regions = new CellRangeAddressList(firstRow,endRow, firstCol, endCol);  
         // 数据有效性对象  
-        HSSFDataValidation data_validation_list = new HSSFDataValidation(regions, constraint);  
+        DataValidation data_validation_list = sheet.getDataValidationHelper().createValidation(constraint,regions);
         sheet.addValidationData(data_validation_list);  
         return sheet;  
     } 
+    
+    public static Workbook getWorkbook(int excelType){
+    	Workbook workbook = null;
+    	switch (excelType) {
+		case ExcelType.EXCEL_2003:
+			workbook = new HSSFWorkbook();
+			break;
+		case ExcelType.EXCEL_2007:
+			workbook = new XSSFWorkbook();
+			break;
+		default:
+			break;
+		}
+    	return workbook;
+    }
+    
 }
