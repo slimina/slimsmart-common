@@ -9,6 +9,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -70,12 +71,12 @@ public class TestExcel extends TestCase{
 	}
 	
 	public void testExcelSelect() throws IOException {  
-        Workbook wb = new XSSFWorkbook();;// excel文件对象  
+        Workbook wb = new HSSFWorkbook();;// excel文件对象  
         Sheet sheetlist = wb.createSheet("sheetlist");// 工作表对象  
-        FileOutputStream out = new FileOutputStream("d:\\success.xlsx");  
+        FileOutputStream out = new FileOutputStream("d:\\success.xls");  
         String[] textlist = { "列表1", "列表2", "列表3", "列表4", "列表5" };  
-        sheetlist = ExcelUtil.setValidation(sheetlist, textlist, 0, Integer.MAX_VALUE, 0, 0);// 第一列的前2147483647行都设置为选择列表形式.  
-        sheetlist = ExcelUtil.setPrompt(sheetlist, "提示信息", "不能为空",0, Integer.MAX_VALUE, 1, 1);// 第二列的前2147483647行都设置提示.  
+        sheetlist = ExcelUtil.setValidation(sheetlist, textlist, 0, 50000, 0, 0);// 第一列的前2147483647行都设置为选择列表形式.  
+        sheetlist = ExcelUtil.setPrompt(sheetlist, "提示信息", "不能为空",0, 50000, 1, 1);// 第二列的前2147483647行都设置提示.  
         wb.write(out);  
         out.close();  
     }  
