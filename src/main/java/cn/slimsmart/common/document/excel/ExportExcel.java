@@ -40,9 +40,9 @@ public class ExportExcel<T> {
 		this.entityClass = clazz;
 	}
 
-	private void renderHeaders(final Workbook workbook, final Sheet sheet, final Map<String, Object> cellMeats, final int level, final int headLevel) {
+	private void renderHeaders(final Workbook workbook, final Sheet sheet, final Map<String, Object> cellMeats, int level, final int headLevel) {
 		// 产生表格标题行
-		Row row = sheet.createRow(level);
+		Row row = sheet.getRow(level)==null ? sheet.createRow(level):sheet.getRow(level);
 		Cell cell = null;
 		for (Entry entry : cellMeats.entrySet()) {
 			CellMeta cellMeat = (CellMeta) entry.getValue();
@@ -78,14 +78,15 @@ public class ExportExcel<T> {
 			
 			RichTextString text = workbook.getCreationHelper().createRichTextString(cellMeat.getDisplay());
 			cell.setCellValue(text);
-			if (level == 0 && cellMeat.getCell().type() != Types.POJO) {
+			System.out.println(level +":"+Integer.valueOf(entry.getKey().toString())+text);
+			if (level < headLevel-1 && cellMeat.getCell().type() != Types.POJO) {
 				sheet.addMergedRegion(new CellRangeAddress(0, headLevel - 1, Integer.valueOf(entry.getKey().toString()), Integer.valueOf(entry.getKey()
 						.toString())));
 			}
 			if (cellMeat.getCell().type() == Types.POJO) {
 				sheet.addMergedRegion(new CellRangeAddress(level, level, Integer.valueOf(entry.getKey().toString()), Integer.valueOf(entry.getKey().toString())
 						+ cellMeat.getCell().length() - 1));
-				renderHeaders(workbook, sheet, ExcelAnnotationTool.getFieldCellMeats(cellMeat.getField().getType(),false), level + 1, headLevel);
+				renderHeaders(workbook, sheet, ExcelAnnotationTool.getFieldCellMeats(cellMeat.getField().getType(),Integer.valueOf(entry.getKey().toString()),false), level + 1, headLevel);
 			}
 		}
 	}
@@ -96,7 +97,7 @@ public class ExportExcel<T> {
 		Workbook workbook = ExcelUtil.getWorkbook(excelType);
 		// 生成一个表格
 		Sheet sheet = workbook.createSheet(excelAnnotation.title());
-		Map<String, Object> cellMeats = ExcelAnnotationTool.getFieldCellMeats(entityClass,true);
+		Map<String, Object> cellMeats = ExcelAnnotationTool.getFieldCellMeats(entityClass,0,true);
 		int rowLen = ExcelAnnotationTool.getRowCount(entityClass);
 		int colLen = (Integer) cellMeats.get(ExcelAnnotationTool.COLUMN_LENGTH);
 		cellMeats.remove(ExcelAnnotationTool.COLUMN_LENGTH);
@@ -110,7 +111,7 @@ public class ExportExcel<T> {
 				Cell cell = row.getCell(j);
 				if (cell == null) {
 					cell = row.createCell(j);
-					cell.setCellValue("");
+					cell.setCellValue("--");
 				}
 				cell.setCellStyle(Styles.getTitleStyle(workbook));
 				sheet.setColumnWidth(j, excelAnnotation.columnWidth()*256);
@@ -213,7 +214,7 @@ public class ExportExcel<T> {
 				break;
 			case Types.POJO:
 				value = ReflectionUtil.getFieldValue(obj, cellMeat.getField());
-				fillRowData(workbook,row, value, ExcelAnnotationTool.getFieldCellMeats(value.getClass(),false));
+				fillRowData(workbook,row, value, ExcelAnnotationTool.getFieldCellMeats(value.getClass(),Integer.valueOf(entry.getKey().toString()),false));
 				break;
 			default:
 				cell = row.createCell(Integer.valueOf(entry.getKey().toString()));

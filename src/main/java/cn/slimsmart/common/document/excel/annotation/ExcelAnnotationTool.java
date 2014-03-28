@@ -26,7 +26,7 @@ public class ExcelAnnotationTool {
 	}
 	
 	//level 目前只支持2层
-	public static Map<String,Object> getFieldCellMeats(Class clazz,boolean isColLen){
+	public static Map<String,Object> getFieldCellMeats(Class clazz,int startColumnIndex,boolean isColLen){
 		Map<String,Object> result = new HashMap<String, Object>();
 		Map<String,Field> fieldMap = ReflectionUtil.getDeclaredFieldMap(clazz);
 		if(CollectionUtil.isEmpty(fieldMap)){
@@ -45,7 +45,7 @@ public class ExcelAnnotationTool {
 			cellMeat.setDisplay(cell.display());;
 			cellMeat.setField((Field)entry.getValue());
 			cellMeat.setCell(cell);
-			result.put(String.valueOf(cell.index()), cellMeat);
+			result.put(String.valueOf(cell.index()+startColumnIndex), cellMeat);
 		}
 		if(isColLen){
 			result.put(COLUMN_LENGTH, colLength);
