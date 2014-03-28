@@ -5,9 +5,9 @@ import cn.slimsmart.common.document.excel.annotation.support.Types;
 
 public class Score {
 	
-	@Cell(display="数学",index=3,type=Types.INTEGER)
+	@Cell(display="数学",index=0,type=Types.INTEGER)
 	private int math;
-	@Cell(display="英语",index=4,type=Types.INTEGER)
+	@Cell(display="英语",index=1,type=Types.INTEGER)
 	private int english;
 	
 	public int getMath() {
