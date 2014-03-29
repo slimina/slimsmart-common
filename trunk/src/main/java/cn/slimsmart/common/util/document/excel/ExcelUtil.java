@@ -61,7 +61,7 @@ public class ExcelUtil {
      * @param endCol  结束列 
      * @return 设置好的sheet. 
      */ 
-	public static Sheet setPrompt(Sheet sheet, String promptTitle,  
+	public static void setPrompt(final Sheet sheet, String promptTitle,  
             String promptContent, int firstRow, int endRow ,int firstCol,int endCol) {  
         // 构造constraint对象  
 		DataValidationConstraint constraint = sheet.getDataValidationHelper().createCustomConstraint("IV1");  
@@ -71,7 +71,6 @@ public class ExcelUtil {
         DataValidation data_validation_view = sheet.getDataValidationHelper().createValidation(constraint,regions);
         data_validation_view.createPromptBox(promptTitle, promptContent);  
         sheet.addValidationData(data_validation_view);  
-        return sheet;  
     } 
 	
 	/** 
@@ -84,8 +83,8 @@ public class ExcelUtil {
      * @param endCol  结束列 
      * @return 设置好的sheet. 
      */  
-    public static Sheet setValidation(Sheet sheet,  
-            String[] textlist, int firstRow, int endRow, int firstCol,  
+    public static void setValidation(final Sheet sheet,  
+            String[] textlist,int firstRow, int endRow, int firstCol,  
             int endCol) {  
         // 加载下拉列表内容  
     	DataValidationConstraint constraint = sheet.getDataValidationHelper().createExplicitListConstraint(textlist);  
@@ -94,7 +93,6 @@ public class ExcelUtil {
         // 数据有效性对象  
         DataValidation data_validation_list = sheet.getDataValidationHelper().createValidation(constraint,regions);
         sheet.addValidationData(data_validation_list);  
-        return sheet;  
     } 
     
     public static Workbook getWorkbook(int excelType){

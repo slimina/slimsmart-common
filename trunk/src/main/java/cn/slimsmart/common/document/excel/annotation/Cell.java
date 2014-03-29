@@ -21,6 +21,10 @@ public @interface Cell {
 	String defaultValue() default "";
 	int type() default Types.STRING;
 	
+	//选择的模板数据 以分号";"分隔 
+	String selectTmplData() default "";
+	String cellTipMsg() default "";
+	
 	//时间、日期转换格式
 	String dataFormat() default "";
 	

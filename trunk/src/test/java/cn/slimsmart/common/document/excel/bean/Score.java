@@ -9,6 +9,8 @@ public class Score {
 	private int math;
 	@Cell(display="英语",index=1,type=Types.INTEGER)
 	private int english;
+	@Cell(display="详情",index=2,length=2,type=Types.POJO)
+	private Info info;
 	
 	public int getMath() {
 		return math;
@@ -21,5 +23,11 @@ public class Score {
 	}
 	public void setEnglish(int english) {
 		this.english = english;
+	}
+	public Info getInfo() {
+		return info;
+	}
+	public void setInfo(Info info) {
+		this.info = info;
 	}
 }
