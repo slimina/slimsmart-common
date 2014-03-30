@@ -117,6 +117,16 @@ public class TestExcel extends TestCase {
 		out.close();
 	}
 	
+	public void testExcelComment() throws IOException {
+		Workbook wb = ExcelUtil.getWorkbook(ExcelType.EXCEL_2007);
+		// excel文件对象
+		Sheet sheet = wb.createSheet("sheetlist");// 工作表对象
+		FileOutputStream out = new FileOutputStream("d:\\test.xlsx");
+		ExcelUtil.setComment(sheet.createRow(0).createCell(2), "作者", "插件批注成功!插件批注成功!插件批注成功!插件批注成功!插件批注成功!插件批注成功!插件批注成功!插件批注成功!");
+		wb.write(out);
+		out.close();
+	}
+	
 	public void testExcelTmpl() throws IOException {
 		File file = new File(path + Info.class.getSimpleName() + ".xlsx");
 		FileOutputStream out = new FileOutputStream(file);

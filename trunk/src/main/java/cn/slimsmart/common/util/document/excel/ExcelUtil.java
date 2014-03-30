@@ -2,8 +2,11 @@ package cn.slimsmart.common.util.document.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.DataValidationConstraint;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -72,6 +75,16 @@ public class ExcelUtil {
         data_validation_view.createPromptBox(promptTitle, promptContent);  
         sheet.addValidationData(data_validation_view);  
     } 
+	
+	public static void setComment(final Cell cell,String title,String message){
+		Sheet sheet = cell.getSheet();
+		Drawing drawing= sheet.createDrawingPatriarch(); 
+		ClientAnchor  anchor = sheet.getWorkbook().getCreationHelper().createClientAnchor();
+		Comment comment = drawing.createCellComment(anchor);
+		comment.setAuthor(title);
+		comment.setString(sheet.getWorkbook().getCreationHelper().createRichTextString(message));
+		cell.setCellComment(comment);
+	}
 	
 	/** 
      * 设置某些列的值只能输入预制的数据,显示下拉框. 
