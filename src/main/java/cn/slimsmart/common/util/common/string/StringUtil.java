@@ -1,6 +1,10 @@
 package cn.slimsmart.common.util.common.string;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.lang3.StringUtils;
+
+import cn.slimsmart.common.util.encode.EncodeUtil;
 
 /**
  * 字符串操作工具类
@@ -19,13 +23,7 @@ public class StringUtil extends StringUtils {
 	 * @return
 	 */
 	public static long byteLength(String str) {
-		int length = str.length();
-		for (int i = 0, l = str.length(); i < l; i++) {
-			if (str.charAt(i) > 127) {
-				length = length + 2;
-			}
-		}
-		return length;
+		return str.getBytes(Charset.forName(EncodeUtil.DEFAULT_ENCODING)).length;
 	}
 
 	/**

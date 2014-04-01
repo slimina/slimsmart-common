@@ -22,7 +22,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class EncodeUtil {
 
-	private static final String DEFAULT_URL_ENCODING = "UTF-8";
+	public static final String DEFAULT_ENCODING = "UTF-8";
+	
 	private static final String DEFAULT_ALGORITHM = "MD5";
 	private static final char[] BASE62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
@@ -84,7 +85,7 @@ public class EncodeUtil {
 	 * URL 编码, Encode默认为UTF-8.
 	 */
 	public static String urlEncode(String input) {
-		return urlEncode(input, DEFAULT_URL_ENCODING);
+		return urlEncode(input, DEFAULT_ENCODING);
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class EncodeUtil {
 	 * URL 解码, Encode默认为UTF-8.
 	 */
 	public static String urlDecode(String input) {
-		return urlDecode(input, DEFAULT_URL_ENCODING);
+		return urlDecode(input, DEFAULT_ENCODING);
 	}
 
 	/**
